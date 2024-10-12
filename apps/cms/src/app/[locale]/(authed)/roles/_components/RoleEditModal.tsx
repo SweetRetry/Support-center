@@ -4,10 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { usePermissionDescrition } from "@/hooks/usePermission";
-import { PermissionEnum } from "@/models/permission.model";
+import { getToken } from "@/lib/tokenUtil";
+import { PermissionEnum } from "@repo/database/models/permission.model";
+
 import {
   getRolePermissionsById,
-  putRolePermissionsUpdate,
+  updateRolePermissions,
 } from "@repo/database/services/role";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -47,8 +49,9 @@ const RoleEditModal = ({
       .filter((item) => item.isChecked)
       .map((item) => item.id);
 
-    const res = await putRolePermissionsUpdate({
+    const res = await updateRolePermissions({
       roleId,
+      token: getToken(),
       permissions: changedPermissionIds,
     });
 

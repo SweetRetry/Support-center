@@ -14,7 +14,8 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { usePermissionDescrition } from "@/hooks/usePermission";
 import { getToken } from "@/lib/tokenUtil";
-import { PermissionEnum } from "@/models/permission.model";
+import { PermissionEnum } from "@repo/database/models/permission.model";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Permission } from "@prisma/client";
 import { getAllPermissions } from "@repo/database/services/permissions";
@@ -73,6 +74,7 @@ const RoleEditModal = ({
 
     const res = await postCreateRole({
       ...form.getValues(),
+      token: getToken(),
       permissionsId,
     });
 

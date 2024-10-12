@@ -4,6 +4,7 @@ import { prisma, Role } from "../client";
 import { IResponse } from "../utils/responseUtil";
 import { TokenUtil } from "../utils/tokenUtil";
 import { PermissionUtil } from "../utils/authUtil";
+import { PermissionEnum } from "../models/permission.model";
 
 export async function login(data: { email: string; password: string }) {
   if (!data.email || !data.password) return IResponse.Error(400, "参数错误");
@@ -79,7 +80,10 @@ export const postCreateUser = async (
   token: string
 ) => {
   try {
-    const hasPermission = PermissionUtil.checkPermission(token, "user:create");
+    const hasPermission = PermissionUtil.checkPermission(
+      token,
+      PermissionEnum.UserCreate
+    );
     if (!hasPermission) {
       return IResponse.PermissionDenied();
     }

@@ -1,4 +1,5 @@
-import { PermissionEnum } from "@/models/permission.model";
+import { PermissionEnum } from "@repo/database/models/permission.model";
+
 import { useTranslations } from "next-intl";
 
 export const usePermissionDescrition = () => {

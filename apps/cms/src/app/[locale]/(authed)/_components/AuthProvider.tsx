@@ -1,4 +1,5 @@
-import { PermissionEnum } from "@/models/permission.model";
+import { PermissionEnum } from "@repo/database/models/permission.model";
+
 import { Permission } from "@prisma/client";
 import { getPermissionList } from "@repo/database/services/auth";
 import { useRouter } from "next/navigation";

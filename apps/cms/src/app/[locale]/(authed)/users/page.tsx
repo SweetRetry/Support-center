@@ -13,7 +13,8 @@ import RoleCheckModal from "./_components/RoleCheckModal";
 import CreateUserModal from "./_components/CreateUserModal";
 import { checkAuth } from "../_components/AuthProvider";
 import { useTranslations } from "next-intl";
-import { PermissionEnum } from "@/models/permission.model";
+import { PermissionEnum } from "@repo/database/models/permission.model";
+
 const page = () => {
   const t = useTranslations();
   const [emailLike, setEmailLike] = useState("");

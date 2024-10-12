@@ -15,7 +15,7 @@ import { Plus } from "lucide-react";
 import CreateRoleModal from "./_components/CreateRoleModal";
 import { useModal } from "@/components/ui-extends/Modal";
 import { useTranslations } from "next-intl";
-import { PermissionEnum } from "@/models/permission.model";
+import { PermissionEnum } from "@repo/database/models/permission.model";
 
 const page = () => {
   const t = useTranslations();
@@ -45,7 +45,7 @@ const page = () => {
       title: t("delete-role"),
       content: t("delete-role-tip"),
       onConfirm: async () => {
-        const res = await deleteRole(roleId);
+        const res = await deleteRole({ token: getToken(), roleId });
         if (res.code === 200) {
           setRoles(roles.filter((role) => role.id !== roleId));
           close();

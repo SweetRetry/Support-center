@@ -4,6 +4,7 @@ import { PermissionUtil } from "../utils/authUtil";
 import { z } from "zod";
 import { IResponse } from "../utils/responseUtil";
 import { StatusCodes } from "http-status-codes";
+import { PermissionEnum } from "../models/permission.model";
 
 export async function getArticle(id: string, language: string) {
   try {
@@ -109,7 +110,7 @@ export async function deleteArticle(
   try {
     const hasPermission = await PermissionUtil.checkPermission(
       token,
-      "article:delete"
+      PermissionEnum.ArticleDelete
     );
     if (!hasPermission) {
       return IResponse.PermissionDenied();
@@ -141,7 +142,7 @@ export async function postCreateArticle(
   try {
     const hasPermission = await PermissionUtil.checkPermission(
       token,
-      "article:edit"
+      PermissionEnum.ArticeEdit
     );
 
     if (!hasPermission) {
@@ -179,7 +180,7 @@ export async function putUpdateArticle(
   try {
     const hasPermission = await PermissionUtil.checkPermission(
       token,
-      "article:edit"
+      PermissionEnum.ArticeEdit
     );
 
     if (!hasPermission) {
@@ -213,7 +214,7 @@ export async function postPulishArticle(
 ) {
   const hasPermission = await PermissionUtil.checkPermission(
     token,
-    "article:publish"
+    PermissionEnum.ArticlePublish
   );
 
   if (!hasPermission) {

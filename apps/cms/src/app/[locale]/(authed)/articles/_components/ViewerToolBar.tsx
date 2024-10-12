@@ -25,7 +25,8 @@ import { formatToUtcTime } from "@repo/utils/dayjsUtil";
 import { Dayjs } from "dayjs";
 import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
-import { PermissionEnum } from "@/models/permission.model";
+import { PermissionEnum } from "@repo/database/models/permission.model";
+
 import { useTranslations } from "next-intl";
 
 const ViewerToolBar = ({

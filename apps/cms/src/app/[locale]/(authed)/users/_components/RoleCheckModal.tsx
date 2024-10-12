@@ -1,7 +1,8 @@
 import { Modal } from "@/components/ui-extends/Modal";
 import { Checkbox } from "@/components/ui/checkbox";
 import { usePermissionDescrition } from "@/hooks/usePermission";
-import { PermissionEnum } from "@/models/permission.model";
+import { PermissionEnum } from "@repo/database/models/permission.model";
+
 import { getRolePermissionsById } from "@repo/database/services/role";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useRef, useState } from "react";

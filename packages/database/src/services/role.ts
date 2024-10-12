@@ -1,5 +1,7 @@
 "use server";
 import { prisma } from "../client";
+import { PermissionEnum } from "../models/permission.model";
+import { PermissionUtil } from "../utils/authUtil";
 import { IResponse } from "../utils/responseUtil";
 import { TokenUtil } from "../utils/tokenUtil";
 
@@ -80,24 +82,29 @@ export const getRolePermissionsById = async (roleId: string) => {
   }
 };
 
-export async function putRolePermissionsUpdate(params: {
+export async function updateRolePermissions(data: {
+  token: string;
   roleId: string;
   permissions: string[];
 }) {
   try {
-    const role = await prisma.$transaction(async (tx) => {
-      return await tx.role.update({
-        where: {
-          id: params.roleId,
+    const hasPermission = await PermissionUtil.checkPermission(
+      data.token,
+      PermissionEnum.RoleEdit
+    );
+    if (!hasPermission) return IResponse.PermissionDenied();
+
+    const role = await prisma.role.update({
+      where: {
+        id: data.roleId,
+      },
+      data: {
+        permissions: {
+          set: data.permissions.map((permissionId) => ({
+            id: permissionId,
+          })),
         },
-        data: {
-          permissions: {
-            set: params.permissions.map((permissionId) => ({
-              id: permissionId,
-            })),
-          },
-        },
-      });
+      },
     });
 
     return IResponse.Success(role);
@@ -107,13 +114,21 @@ export async function putRolePermissionsUpdate(params: {
 }
 
 export async function postCreateRole({
+  token,
   name,
   permissionsId,
 }: {
+  token: string;
   name: string;
   permissionsId: string[];
 }) {
   try {
+    const hasPermission = await PermissionUtil.checkPermission(
+      token,
+      PermissionEnum.RoleCreate
+    );
+    if (!hasPermission) return IResponse.PermissionDenied();
+
     const role = await prisma.role.create({
       data: {
         name,
@@ -129,8 +144,20 @@ export async function postCreateRole({
   }
 }
 
-export async function deleteRole(roleId: string) {
+export async function deleteRole({
+  token,
+  roleId,
+}: {
+  token: string;
+  roleId: string;
+}) {
   try {
+    const hasPermission = await PermissionUtil.checkPermission(
+      token,
+      PermissionEnum.RoleCreate
+    );
+    if (!hasPermission) return IResponse.PermissionDenied();
+
     await prisma.role.delete({
       where: {
         id: roleId,
