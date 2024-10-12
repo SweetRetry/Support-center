@@ -24,7 +24,7 @@ export const useColumns = ({
     {
       accessorKey: "role",
       header: t('role'),
-      cell: ({ row }) => <div>{row.original.role?.description}</div>,
+      cell: ({ row }) => <div>{row.original.role?.name}</div>,
     },
     {
       accessorKey: "createdAt",

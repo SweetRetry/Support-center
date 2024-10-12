@@ -28,8 +28,7 @@ async function main() {
   // 创建角色
   const role = await prisma.role.create({
     data: {
-      name: "superAdmin",
-      description: "Super Admin",
+      name: "Super admin",
       editable: false,
       permissions: {
         connect: permissions,

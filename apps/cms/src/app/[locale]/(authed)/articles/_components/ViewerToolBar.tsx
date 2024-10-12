@@ -32,10 +32,12 @@ const ViewerToolBar = ({
   id,
   status,
   setData,
+  locale,
 }: {
   status?: ArticleStatus;
   id?: string;
   setData: Dispatch<SetStateAction<ArticleListItem[]>>;
+  locale: string;
 }) => {
   const t = useTranslations();
   const { show, contextHandler, close } = useModal();
@@ -84,7 +86,7 @@ const ViewerToolBar = ({
         const token = getToken();
         if (id && token) {
           const res = await putUpdateArticle(
-            { id, status: ArticleStatus.UNPUBLISHED, language: "en-US" },
+            { id, status: ArticleStatus.DRAFT, language: "en-US" },
             getToken(),
           );
           if (res.data) {
@@ -92,9 +94,7 @@ const ViewerToolBar = ({
               prev.map((item) => ({
                 ...item,
                 status:
-                  item.id === res.data.id
-                    ? ArticleStatus.UNPUBLISHED
-                    : item.status,
+                  item.id === res.data.id ? ArticleStatus.DRAFT : item.status,
               })),
             );
 
@@ -122,7 +122,7 @@ const ViewerToolBar = ({
         const token = getToken();
         if (id && token) {
           const res = await putUpdateArticle(
-            { id, status: ArticleStatus.UNPUBLISHED, language: "en-US" },
+            { id, status: ArticleStatus.REVIEWED, language: locale },
             getToken(),
           );
           if (res.data) {
@@ -131,7 +131,7 @@ const ViewerToolBar = ({
                 ...item,
                 status:
                   item.id === res.data.id
-                    ? ArticleStatus.UNPUBLISHED
+                    ? ArticleStatus.REVIEWED
                     : item.status,
               })),
             );
@@ -158,7 +158,7 @@ const ViewerToolBar = ({
       content: t("are-you-sure-you-want-to-publish-this-article"),
       onConfirm: async () => {
         const res = await postPulishArticle(
-          { id, type: "now", language: "en-US" },
+          { id, type: "now", language: locale },
           getToken(),
         );
         if (res.data?.id) {
@@ -190,7 +190,7 @@ const ViewerToolBar = ({
       const res = await postPulishArticle(
         {
           id,
-          language: "en-US",
+          language: locale,
           type: "future",
           expiredAt: formatToUtcTime(expiredAt),
         },
@@ -247,7 +247,7 @@ const ViewerToolBar = ({
         size="icon"
         variant="ghost"
         disabled={
-          status !== ArticleStatus.UNPUBLISHED ||
+          status !== ArticleStatus.REVIEWED ||
           !checkAuth(PermissionEnum.ArticlePublish)
         }
         onClick={() => setOpen(true)}
@@ -271,7 +271,7 @@ const ViewerToolBar = ({
         size="icon"
         variant="ghost"
         disabled={
-          status !== ArticleStatus.UNPUBLISHED ||
+          status !== ArticleStatus.REVIEWED ||
           !checkAuth(PermissionEnum.ArticlePublish)
         }
         onClick={() => onPublish()}
@@ -291,7 +291,7 @@ const ViewerToolBar = ({
         <Check />
       </Button>
 
-      <Modal open={open} setOpen={setOpen} title="Timed Publish">
+      <Modal open={open} setOpen={setOpen} title={t("VHonL6EZQkxwn4LxLLgYp")}>
         <DatePicker
           showTime
           className="w-full !rounded"

@@ -40,12 +40,8 @@ export const getUserList = async (params: {
     const users = await prisma.user.findMany({
       take: params.pageSize,
       skip: (params.pageId - 1) * params.pageSize,
-      select: {
+      include: {
         role: true,
-        email: true,
-        createdAt: true,
-        id: true,
-        updatedAt: true,
       },
       where: {
         email: {

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Command,
   CommandEmpty,
@@ -14,7 +14,6 @@ import { Category } from "@prisma/client";
 import SrInput from "../ui-extends/SrInput";
 import { Button } from "../ui/button";
 
-import { useDebounceFn } from "ahooks";
 import {
   postCreateNewCategory,
   getCategoryList,
@@ -53,40 +52,33 @@ const CategorySelect = ({
     setCreating(false);
   };
 
-  const { run: onSearchValueChange } = useDebounceFn(
-    async (value: string) => {
-      setSearchValue(value);
-      const res = await getCategoryList(value);
+  useEffect(() => {
+    const run = async () => {
+      const res = await getCategoryList(locale);
       if (res.data) {
         setCategories(res.data);
       }
-    },
-    {
-      wait: 200,
-    },
-  );
+    };
 
-  useEffect(() => {
-    onSearchValueChange("");
+    run();
   }, []);
+
+  const filterdCategorys = categories.filter((item) =>
+    item.name.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()),
+  );
 
   return (
     <Command>
-      <CommandInput
-        placeholder={t("search-category")}
-        value={searchValue}
-        onValueChange={(value) => onSearchValueChange(value)}
-      />
+      <CommandInput placeholder={t("search-category")} />
       <CommandList>
         <CommandEmpty>{t("no-category-found")}</CommandEmpty>
         <CommandGroup>
-          {categories.map((category) => (
+          {filterdCategorys.map((category) => (
             <CommandItem
               key={category.id}
-              value={category.id}
-              onSelect={(currentValue) => {
-                setValue(currentValue === value ? "" : currentValue);
-                onSelect(currentValue, category);
+              onSelect={() => {
+                setValue(category.id === value ? "" : category.id);
+                onSelect(category.id === value ? "" : category.id, category);
               }}
             >
               <Check
@@ -95,7 +87,7 @@ const CategorySelect = ({
                   value === category.id ? "opacity-100" : "opacity-0",
                 )}
               />
-              {category.name}
+              <span>{category.name}</span>
             </CommandItem>
           ))}
         </CommandGroup>

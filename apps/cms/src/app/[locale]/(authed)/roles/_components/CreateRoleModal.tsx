@@ -52,14 +52,10 @@ const RoleEditModal = ({
     resolver: zodResolver(
       z.object({
         name: z.string().min(1, { message: t("role-name-is-required") }),
-        description: z
-          .string()
-          .min(1, { message: t("role-description-is-required") }),
       }),
     ),
     defaultValues: {
       name: "",
-      description: "",
     },
   });
 
@@ -152,18 +148,6 @@ const RoleEditModal = ({
                   <FormLabel>{t("role-name")}</FormLabel>
                   <FormControl>
                     <Input placeholder={t("role-name")} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("role-description")}</FormLabel>
-                  <FormControl>
-                    <Input placeholder={t("role-description")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

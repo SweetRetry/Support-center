@@ -18,6 +18,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -30,9 +31,7 @@ import {
 import { getToken } from "@/lib/tokenUtil";
 import { useToast } from "@/hooks/use-toast";
 import ButtonLoading from "../ui-extends/ButtonLoading";
-import { Select, SelectContent, SelectItem, SelectTrigger } from "../ui/select";
-import { SelectValue } from "@radix-ui/react-select";
-import { localeArray } from "@/i18n/config";
+
 import { useTranslations } from "next-intl";
 
 function EditorForm({ id, locale }: { id: string; locale: string }) {
@@ -42,8 +41,7 @@ function EditorForm({ id, locale }: { id: string; locale: string }) {
 
   const [articleId, setArticleId] = useState(id === "new" ? "" : id);
   const [loading, setLoading] = useState(false);
-  const [language, setLanguage] = useState(id === "new" ? "" : locale);
-  const [open, setOpen] = useState(false);
+
   const [modalOpen, setModalOpen] = useState(false);
 
   const router = useRouter();
@@ -78,20 +76,15 @@ function EditorForm({ id, locale }: { id: string; locale: string }) {
         title: t("please-enter-a-title-or-content"),
       });
 
-    if (!language) {
-      setOpen(true);
-      return;
-    }
-
     setLoading(true);
 
     if (!articleId) {
       const res = await postCreateArticle(
         {
           title: title,
+          language: locale,
           content: JSON.stringify(content),
           description: _description,
-          language,
         },
         getToken(),
       );
@@ -104,7 +97,7 @@ function EditorForm({ id, locale }: { id: string; locale: string }) {
         {
           id: articleId,
           title,
-          language,
+          language: locale,
           content: JSON.stringify(content),
           description: _description,
         },
@@ -144,15 +137,17 @@ function EditorForm({ id, locale }: { id: string; locale: string }) {
     });
 
   const onReview = async () => {
-    if (!categoryId) return;
+    const success = await form.trigger();
+    if (!success) return;
     setLoading(true);
 
     const res = await putUpdateArticle(
       {
         id: articleId,
         categoryId,
+        categoryLang: locale,
         title,
-        language,
+        language: locale,
         description: form.getValues("description"),
         status: ArticleStatus.UNDER_REVIEW,
         updatedAt: new Date(),
@@ -162,7 +157,7 @@ function EditorForm({ id, locale }: { id: string; locale: string }) {
 
     if (res.code === 200) {
       setModalOpen(false);
-      router.replace("/articles");
+      router.push("/articles");
     }
 
     setLoading(false);
@@ -178,7 +173,7 @@ function EditorForm({ id, locale }: { id: string; locale: string }) {
       <header className="flex h-16 items-center justify-between px-6">
         <Input
           className="h-12 max-w-[60%] rounded-none border-0 p-0 text-xl placeholder:text-xl focus-visible:ring-0 focus-visible:ring-offset-0"
-          placeholder="Enter the article title..."
+          placeholder={t("QDoPAziJg73-nfLDH6s7l")}
           value={title}
           onChange={(e) => form.setValue("title", e.target.value)}
         />
@@ -192,7 +187,7 @@ function EditorForm({ id, locale }: { id: string; locale: string }) {
           </ButtonLoading>
           {status === ArticleStatus.DRAFT && (
             <ButtonLoading loading={loading} onClick={() => onPrepareReview()}>
-              {t("review")}
+              {t("uiJ2Umpg9n5LGJk3U60zs")}
             </ButtonLoading>
           )}
         </div>
@@ -247,7 +242,7 @@ function EditorForm({ id, locale }: { id: string; locale: string }) {
               />
 
               <FormField
-                name="title"
+                name="categoryId"
                 control={form.control}
                 render={() => (
                   <FormItem>
@@ -263,6 +258,8 @@ function EditorForm({ id, locale }: { id: string; locale: string }) {
                         />
                       </div>
                     </FormControl>
+
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -273,32 +270,8 @@ function EditorForm({ id, locale }: { id: string; locale: string }) {
             <Button variant="secondary" onClick={() => setModalOpen(false)}>
               {t("cancel")}
             </Button>
-            <Button onClick={onReview}>{t("review")}</Button>
+            <Button onClick={onReview}>{t("uiJ2Umpg9n5LGJk3U60zs")}</Button>
           </div>
-        </div>
-      </Modal>
-
-      <Modal title={t("select-language")} open={open} setOpen={setOpen}>
-        <Select value={language} onValueChange={(value) => setLanguage(value)}>
-          <SelectTrigger>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {localeArray.map((item) => (
-              <SelectItem key={item.value} value={item.value}>
-                {item.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        <div className="mt-4 space-x-2 text-right">
-          <Button variant="secondary" onClick={() => setOpen(false)}>
-            {t("cancel")}
-          </Button>
-          <ButtonLoading loading={loading} onClick={onSaveWrapper}>
-            {t("save")}
-          </ButtonLoading>
         </div>
       </Modal>
     </main>

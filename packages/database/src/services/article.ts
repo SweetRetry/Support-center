@@ -61,12 +61,7 @@ export async function getArticleList(params: {
       take: params.pageSize,
       skip: (params.pageId - 1) * params.pageSize,
       where: wherePattern,
-      select: {
-        id: true,
-        title: true,
-        status: true,
-        updatedAt: true,
-        description: true,
+      include: {
         category: true,
       },
     });
@@ -84,7 +79,7 @@ export async function getArticleList(params: {
         status: ArticleStatus;
         updatedAt: Date;
         description: string;
-        publishedAt?: string;
+        publishedAt?: Date | null;
         category: { id: string; name: string } | null;
       }>;
       totalPage: number;
@@ -207,48 +202,6 @@ export async function putUpdateArticle(
   }
 }
 
-export async function getArticleListByKeyword(keyword: string) {
-  try {
-    const articles = await prisma.article.findMany({
-      where: {
-        OR: [
-          {
-            title: {
-              contains: keyword,
-            },
-          },
-          {
-            description: {
-              contains: keyword,
-            },
-          },
-        ],
-        status: ArticleStatus.PUBLISHED,
-      },
-      take: 10,
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        updatedAt: true,
-        categoryId: true,
-        category: {
-          select: {
-            name: true,
-          },
-        },
-      },
-    });
-
-    return IResponse.Success(articles);
-  } catch (err) {
-    return IResponse.Error(
-      StatusCodes.INTERNAL_SERVER_ERROR,
-      "Internal Server Error"
-    );
-  }
-}
-
 export async function postPulishArticle(
   data: {
     id: string;
@@ -320,7 +273,7 @@ export async function getPendingArticles(pageSize: number) {
       },
       status: ArticleStatus.PUBLISHED,
     },
-    take: pageSize ?? 5,
+    take: pageSize,
   });
 
   return IResponse.Success(pendingArticles);
@@ -341,7 +294,7 @@ export async function getArticleStatusCount() {
     const prevCount = await prisma.article.count({
       where: {
         status: ArticleStatus.PUBLISHED,
-        updatedAt: {
+        publishedAt: {
           gte: new Date(yesterday.setHours(0, 0, 0, 0)),
           lt: new Date(today.setHours(0, 0, 0, 0)),
         },

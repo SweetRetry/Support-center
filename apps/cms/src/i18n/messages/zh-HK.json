@@ -70,7 +70,7 @@
   "reset-password": "重設密碼",
   "check-permission": "檢查權限",
   "articles-management": "文章管理",
-  "users-management": "使用者管理",
+  "users-management": "用戶管理",
   "roles-managment": "角色管理",
   "article-status": "文章狀態",
   "draft": "草稿",
@@ -85,7 +85,7 @@
   "no-category-found": "未找到類別。",
   "add": "添加",
   "add-new-category": "新增類別",
-  "enter-some-rich-text": "輸入一些富文本...",
+  "enter-some-rich-text": "輸入文章內容...",
   "article-title": "文章標題",
   "enter-the-article-title": "輸入文章標題",
   "article-description": "文章描述",
@@ -93,5 +93,10 @@
   "you-can-customize-the-article-description": "您可以自訂文章描述。",
   "pulishing-category": "出版類別",
   "select-language": "選擇語言",
-  "search-category": "搜尋類別"
+  "search-category": "搜尋類別",
+  "HSEqdVK7j8Am7n0kN14rC": "沒有文章",
+  "QDoPAziJg73-nfLDH6s7l": "輸入文章標題...",
+  "uiJ2Umpg9n5LGJk3U60zs": "提交審核",
+  "reviewed": "已審核",
+  "VHonL6EZQkxwn4LxLLgYp": "定時發布"
 }

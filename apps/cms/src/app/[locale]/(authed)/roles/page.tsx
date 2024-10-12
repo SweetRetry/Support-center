@@ -29,8 +29,6 @@ const page = () => {
   const paginationParams = useRef({
     pageId: 1,
     pageSize: 10,
-    totalPage: 0,
-    totalCount: 0,
   });
 
   const [open, setOpen] = useState(false);

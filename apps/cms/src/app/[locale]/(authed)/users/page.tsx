@@ -1,7 +1,7 @@
 "use client";
 import { useList } from "@/hooks/useList";
 import React, { useEffect, useState } from "react";
-import { getUserList, UserListItem } from "@repo/database/services/user";
+import { getUserList } from "@repo/database/services/user";
 import { useColumns } from "./_components/columns";
 import { DataTable } from "@/components/ui-extends/data-table";
 
@@ -18,12 +18,13 @@ const page = () => {
   const t = useTranslations();
   const [emailLike, setEmailLike] = useState("");
 
-  const { fetch, data, totalCount, totalPage, loading } = useList(
-    {
-      emailLike,
-    },
-    getUserList,
-  );
+  const { fetch, data, totalCount, totalPage, loading, params, debounceFetch } =
+    useList(
+      {
+        emailLike,
+      },
+      getUserList,
+    );
 
   const [actionRoleId, setActionRoleId] = useState<string | undefined>();
   const [open, setOpen] = useState(false);
@@ -51,7 +52,8 @@ const page = () => {
           value={emailLike}
           onChange={(e) => {
             setEmailLike(e.target.value);
-            fetch();
+            params.current.emailLike = e.target.value;
+            debounceFetch();
           }}
           placeholder={t("search-user-by-email")}
         />

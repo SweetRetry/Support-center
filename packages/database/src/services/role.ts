@@ -18,14 +18,6 @@ export const getRoleList = async (
       const roles = await prisma.role.findMany({
         skip: (params.pageId - 1) * params.pageSize,
         take: params.pageSize,
-        select: {
-          id: true,
-          name: true,
-          editable: true,
-          createdAt: true,
-          updatedAt: true,
-          description: true,
-        },
       });
 
       const count = await prisma.role.count();
@@ -36,16 +28,7 @@ export const getRoleList = async (
         totalCount: count,
       });
     } else {
-      const roles = await prisma.role.findMany({
-        select: {
-          id: true,
-          name: true,
-          editable: true,
-          createdAt: true,
-          updatedAt: true,
-          description: true,
-        },
-      });
+      const roles = await prisma.role.findMany();
 
       return IResponse.Success({
         list: roles,
@@ -125,18 +108,15 @@ export async function putRolePermissionsUpdate(params: {
 
 export async function postCreateRole({
   name,
-  description,
   permissionsId,
 }: {
   name: string;
-  description: string;
   permissionsId: string[];
 }) {
   try {
     const role = await prisma.role.create({
       data: {
         name,
-        description,
         permissions: {
           connect: permissionsId.map((id) => ({ id })),
         },

@@ -130,7 +130,7 @@ const CreateUserModal = ({
                     <SelectContent>
                       {roles?.map((role) => (
                         <SelectItem value={role.id} key={role.id}>
-                          {role.description}
+                          {role.name}
                         </SelectItem>
                       ))}
                     </SelectContent>

@@ -85,7 +85,7 @@
   "no-category-found": "未找到类别。",
   "add": "添加",
   "add-new-category": "添加新类别",
-  "enter-some-rich-text": "输入一些富文本...",
+  "enter-some-rich-text": "输入文章内容...",
   "article-title": "文章标题",
   "enter-the-article-title": "输入文章标题",
   "article-description": "文章描述",
@@ -93,5 +93,10 @@
   "you-can-customize-the-article-description": "您可以自定义文章描述。",
   "pulishing-category": "出版类别",
   "select-language": "选择语言",
-  "search-category": "搜索类别"
+  "search-category": "搜索类别",
+  "HSEqdVK7j8Am7n0kN14rC": "没有文章",
+  "QDoPAziJg73-nfLDH6s7l": "输入文章标题...",
+  "uiJ2Umpg9n5LGJk3U60zs": "提交审核",
+  "reviewed": "已审核",
+  "VHonL6EZQkxwn4LxLLgYp": "定时发布"
 }

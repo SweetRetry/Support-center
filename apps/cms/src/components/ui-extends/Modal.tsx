@@ -25,6 +25,7 @@ import { useState } from "react";
 import ButtonLoading from "./ButtonLoading";
 import { cn } from "@/lib/utils";
 import { VariantProps } from "class-variance-authority";
+import { useTranslations } from "next-intl";
 
 export function Modal({
   title,
@@ -126,6 +127,8 @@ export function useModal() {
     variant: "default",
   });
 
+  const t = useTranslations();
+
   const show = ({
     title,
     content,
@@ -163,7 +166,7 @@ export function useModal() {
         <div>{state?.content}</div>
         <div className="mt-4 flex justify-end gap-2">
           <Button variant="secondary" onClick={() => close()}>
-            Cancel
+            {t("cancel")}
           </Button>
           <ButtonLoading
             variant={state.variant}
@@ -174,7 +177,7 @@ export function useModal() {
               setLoading(false);
             }}
           >
-            Confirm
+            {t("confirm")}
           </ButtonLoading>
         </div>
       </Modal>

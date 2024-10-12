@@ -72,7 +72,7 @@ export const useList = <T, P extends Record<string, any> = Record<string, any>>(
     );
   }, [service, options, params.current]);
 
-  const debounceFetch = debounce(() => fetch(), 200);
+  const debounceFetch = debounce(() => fetch(), 300);
 
   const nextPage = () => {
     // 检查可否下一页
@@ -126,5 +126,6 @@ export const useList = <T, P extends Record<string, any> = Record<string, any>>(
     onPageSizeChange,
     canNextPage,
     canPreviousPage,
+
   };
 };

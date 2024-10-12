@@ -32,6 +32,7 @@ export const useAuth = () => React.useContext(AuthContext);
 
 export const checkAuth = (permission: PermissionEnum) => {
   const authList = useAuth();
+
   return authList.findIndex((item) => item.name === permission) !== -1;
 };
 

@@ -20,9 +20,11 @@ import { Empty } from "antd";
 import Link from "next/link";
 import FilterModalContent from "./_components/FilterModalContent";
 import { useTranslations } from "next-intl";
+import { useArticleTranslate } from "@/hooks/useArticle";
 
 const page = ({ params: { locale } }: { params: { locale: string } }) => {
   const t = useTranslations();
+  const { ArticleStatusTranslate } = useArticleTranslate();
   const [keyword, setKeyword] = useState("");
   const [status, setStatus] = useState<ArticleStatus>();
   const [categoryId, setCategoryId] = useState<string>();
@@ -47,7 +49,7 @@ const page = ({ params: { locale } }: { params: { locale: string } }) => {
   }
 
   useEffect(() => {
-    document.title = t('articles');
+    document.title = t("articles");
   }, []);
 
   useEffect(() => {
@@ -70,7 +72,7 @@ const page = ({ params: { locale } }: { params: { locale: string } }) => {
 
           <Button variant="outline" onClick={() => setFilterModalOpen(true)}>
             <FilterIcon width={20} height={20} className="mr-1" />
-            <span>{t('filter')}</span>
+            <span>{t("filter")}</span>
           </Button>
         </div>
 
@@ -96,32 +98,35 @@ const page = ({ params: { locale } }: { params: { locale: string } }) => {
               >
                 <div className="flex items-center justify-between">
                   <h4 className="font-bold">{item.title}</h4>
-                  <p className="text-sm">{formatToUtcTime(item.updatedAt)}</p>
+                  <p className="text-sm">
+                    {formatToUtcTime(
+                      item.status === ArticleStatus.PUBLISHED
+                        ? item.publishedAt!
+                        : item.updatedAt,
+                    )}
+                  </p>
                 </div>
 
                 <p className="my-4 text-muted-foreground">{item.description}</p>
                 <div className="flex items-center space-x-2 text-sm">
-                  {item.category?.id && (
-                    <span className="mt-2 rounded-full border border-border px-2 py-1">
-                      {item.category?.name}
-                    </span>
-                  )}
-
                   <span
                     className={cn(
                       "mt-2 rounded-full border border-border px-2 py-1",
                     )}
                   >
-                    {item.status}
-                    {item.status === ArticleStatus.PENDING && (
-                      <span>{` - ${formatToUtcTime(item.publishedAt!)}`}</span>
-                    )}
+                    {ArticleStatusTranslate[item.status]}
                   </span>
+
+                  {item.category?.id && (
+                    <span className="mt-2 rounded-full border border-border px-2 py-1">
+                      {item.category?.name}
+                    </span>
+                  )}
                 </div>
               </li>
             ))
           ) : (
-            <Empty description="No articles">
+            <Empty description={t("HSEqdVK7j8Am7n0kN14rC")}>
               <Link href="/articles/editor/draft/new">
                 <Button>{t("create-now")}</Button>
               </Link>
@@ -135,6 +140,7 @@ const page = ({ params: { locale } }: { params: { locale: string } }) => {
           id={actionArticleItem?.id}
           status={actionArticleItem?.status}
           setData={setData}
+          locale={locale}
         />
 
         {actionArticleItem && (

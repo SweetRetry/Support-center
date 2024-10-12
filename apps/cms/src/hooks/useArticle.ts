@@ -10,7 +10,7 @@ export const useArticleTranslate = () => {
     ["PENDING"]: t("pending"),
     [ArticleStatus.PUBLISHED]: t("published"),
     [ArticleStatus.UNDER_REVIEW]: t("under-review"),
-    [ArticleStatus.UNPUBLISHED]: t("unpublished"),
+    [ArticleStatus.REVIEWED]: t("reviewed"),
   };
 
   return { ArticleStatusTranslate };
