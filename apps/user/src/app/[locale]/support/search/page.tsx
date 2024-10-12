@@ -14,10 +14,12 @@ import SearchResult from "./_components/SearchResult";
 
 const SearchPage = ({
   searchParams,
+  params: { locale },
 }: {
   searchParams: {
     q: string;
   };
+  params: { locale: string };
 }) => {
   const t = useTranslations("");
 
@@ -44,7 +46,11 @@ const SearchPage = ({
             </BreadcrumbList>
           </Breadcrumb>
 
-          <SearchResult q={searchParams.q} tip={t("search-not-found")} />
+          <SearchResult
+            q={searchParams.q}
+            tip={t("search-not-found")}
+            locale={locale}
+          />
         </SectionWrap>
       </section>
     </main>
