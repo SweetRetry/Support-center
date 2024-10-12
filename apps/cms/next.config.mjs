@@ -6,9 +6,9 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig = {
   reactStrictMode: false,
 
-  experimental: {
-    instrumentationHook: true,
-  },
+  // experimental: {
+  //   instrumentationHook: true,
+  // },
 };
 
 export default withNextIntl(nextConfig);
