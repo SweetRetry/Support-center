@@ -18,12 +18,12 @@ model User {
 }
 
 model Role {
-  id          String   @id @default(cuid())
-  name        String   @unique
-  description String?
-  editable    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  id   String @id @default(cuid())
+  name String @unique
+
+  editable  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 
   permissions Permission[] @relation(name: "RolePermissions")
   User        User[]
@@ -52,7 +52,7 @@ model Category {
 enum ArticleStatus {
   DRAFT
   UNDER_REVIEW
-  UNPUBLISHED
+  REVIEWED
   PUBLISHED
   DELETED
 }
